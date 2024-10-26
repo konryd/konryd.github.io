@@ -51,11 +51,18 @@
     }
 
     #results .material-icons {
-      font-size: 15px;
+      font-size: 19px;
+      vertical-align: text-bottom;
     }
 
     #results td {
-      padding: 10px;
+      padding: 8px;
+      text-wrap: nowrap;
+    }
+
+    #results td.num {
+      padding-right: 30px;
+      text-align: right;
     }
 
     .info-button {
@@ -264,10 +271,10 @@
 
             let dateString = formatDate(startTime);
             let timeSpanString = `<b>${formatTime(startTime)} - ${formatTime(endTime)}</b>`;
-            let resultString = `<td>${dateString}, ${timeSpanString}</td> `
-            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span>  ${chunk.votes.satisfied}</td>`;
-            resultString += `<td><span class="material-icons">sentiment_neutral</span>  ${chunk.votes.neutral}</td>`;
-            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span>  ${chunk.votes.dissatisfied}</td>`;
+            let resultString = `<td class="num">${dateString}, ${timeSpanString}</td> `
+            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span></td><td class="num">${chunk.votes.satisfied}</td>`;
+            resultString += `<td><span class="material-icons">sentiment_neutral</span></td><td class="num">${chunk.votes.neutral}</td>`;
+            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span></td><td class="num">${chunk.votes.dissatisfied}</td>`;
 
             let tr = document.createElement('tr');
             tr.innerHTML = resultString; // Use innerHTML to render the bold tags
