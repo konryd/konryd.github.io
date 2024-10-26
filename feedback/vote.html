@@ -109,30 +109,11 @@
       }
 
      function formatDate(date) {
-      let today = new Date();
-      let yesterday = new Date();
-      yesterday.setDate(today.getDate() - 1);
-
-      if (isSameDay(date, today)) {
-        return "Dziś";
-      } else if (isSameDay(date, yesterday)) {
-        return "Wczoraj";   
-
-      } else if (daysBetween(date, today) <= 10) {
-        return `${daysBetween(date, today)} dni temu`;
-      } else {
-        return date.toISOString().slice(0, 10); // yyyy-mm-dd
-      }
+      return date.toISOString().slice(0, 10); // yyyy-mm-dd
     }
 
     function formatTime(date) {
       return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
-    }
-
-    function isSameDay(date1, date2) {
-      return date1.getFullYear() === date2.getFullYear() &&
-             date1.getMonth() === date2.getMonth() &&
-             date1.getDate() === date2.getDate();
     }
 
     function   
