@@ -1,5 +1,6 @@
 {
   "name": "Feedback",
+  "start_url": "/feedback/vote.html",
   "icons": [
     {
       "src": "/icon512.png",
@@ -12,6 +13,5 @@
       "sizes": "192x192"
     },
   ],
-  "start_url": "/",
   "display": "standalone",
 }
