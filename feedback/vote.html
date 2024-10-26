@@ -74,13 +74,6 @@
       });
 
 
-      if (window.location.href.indexOf("results") == -1) {
-        console.log("hiding results")
-        document.getElementById("counter").style.display = 'none';
-      } else {
-        console.log("not hiding results")
-      }
-
     });
 
 
@@ -100,16 +93,6 @@
       <span class="material-icons">sentiment_very_dissatisfied</span>
     </div> 
   </div>
-
-<div id="counter">
-  <p>Głosy z ostatnich 30 min: 
-    &nbsp; &nbsp;
-    <span class="material-icons">sentiment_very_satisfied</span>: <span id="satisfiedCount">0</span>
-    &nbsp; &nbsp;
-    <span class="material-icons">sentiment_neutral</span>: <span id="neutralCount">0</span>
-    &nbsp; &nbsp;
-    <span class="material-icons">sentiment_very_dissatisfied</span>:<span id="dissatisfiedCount">0</span></p>
-</div>
 
 <script>
   const satisfiedButton = document.getElementById('satisfied');
@@ -157,40 +140,12 @@
   }
 
   function updateCounter() {
-    let now = Date.now();
-    let thirtyMinutesAgo = now - (30 * 60 * 1000);
-
-    let transaction = db.transaction(['votes'], 'readonly');
-    let objectStore = transaction.objectStore('votes');
-    let index = objectStore.index('ts');
-    let range = IDBKeyRange.lowerBound(thirtyMinutesAgo);
-    let request = index.openCursor(range);
-
-    let counts = { satisfied: 0, neutral: 0, dissatisfied: 0 };
-
-    request.onsuccess = function(event) {
-      let cursor = event.target.result;
-      if (cursor) {
-        counts[cursor.value.vote]++;
-        cursor.continue();
-      } else {
-        satisfiedCount.textContent = counts.satisfied;
-        neutralCount.textContent = counts.neutral;
-        dissatisfiedCount.textContent = counts.dissatisfied;
-      }
-    };
-
-    request.onerror = function(event) {
-      console.error('Error updating counter:', event.target.errorCode);
-    };
+    console.log("update counter empty");
   }
 
   satisfiedButton.addEventListener('click', () => addVote('satisfied'));
   neutralButton.addEventListener('click', () => addVote('neutral'));
   dissatisfiedButton.addEventListener('click', () => addVote('dissatisfied'));
-
-  // Update the counter every minute
-  setInterval(updateCounter, 60 * 1000); 
 </script>
 </body>
 </html>
