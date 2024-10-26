@@ -89,6 +89,13 @@
 
   <script>
 
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register (
+          '/feedback/sw.js',
+          {scope: '/feedback/'}
+        )
+      }
+
      function formatDate(date) {
       let today = new Date();
       let yesterday = new Date();
