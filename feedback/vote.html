@@ -62,9 +62,18 @@
       text-wrap: nowrap;
     }
 
+    #results td.date {
+      padding-right: 5px;
+      text-align: left;
+    }
+
     #results td.num {
       padding-right: 30px;
       text-align: right;
+    }
+
+    .break-button {
+      display: inline;
     }
 
     .info-button {
@@ -80,10 +89,8 @@
     #info-text { 
       display: none; /* Initially hide the info text */
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
+      top: 0%;
+      left: 0%;
     }
   </style>
 
@@ -169,8 +176,9 @@
           infoText.style.display = 'block';
           iconsDiv.style.display = 'none';
           infoButton.textContent = '[zamknij]';
-          document.body.style.overflow = 'scroll'
+          document.body.style.overflow = 'auto'
           document.body.style.userSelect = 'auto';
+          updateCounter();
         }
       });
 
@@ -263,7 +271,7 @@
           let timestamp = cursor.value.ts;
           let vote = cursor.value.vote;
 
-          if (!currentChunk || timestamp - lastTimestamp > (30 * 60 * 1000)) {
+          if (!currentChunk || timestamp - lastTimestamp > (30 * 60 * 1000) || vote === 'break') {
             // Start a new chunk
             currentChunk = {
               startTime: timestamp,
@@ -283,13 +291,18 @@
           // Display the chunks
           resultsTable.innerHTML = ''; // Clear previous results
           chunks.reverse(); // Order chunks from most recent to oldest
+          var firstItemShown = false;
           chunks.forEach(chunk => {
             let startTime = new Date(chunk.startTime);
             let endTime = new Date(chunk.startTime + chunk.duration);
 
             let dateString = formatDate(startTime);
             let timeSpanString = `<b>${formatTime(startTime)} - ${formatTime(endTime)}</b>`;
-            let resultString = `<td class="num">${dateString}, ${timeSpanString}</td> `
+            let resultString = `<td class="date">${dateString}, ${timeSpanString}`
+            if (!firstItemShown) {
+              resultString += ` <div id="break-button" class="break-button">[zakończ]</div>`
+            }
+            resultString += `</td> `
             resultString += `<td><span class="material-icons">sentiment_very_satisfied</span></td><td class="num">${chunk.votes.satisfied}</td>`;
             resultString += `<td><span class="material-icons">sentiment_neutral</span></td><td class="num">${chunk.votes.neutral}</td>`;
             resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span></td><td class="num">${chunk.votes.dissatisfied}</td>`;
@@ -297,6 +310,12 @@
             let tr = document.createElement('tr');
             tr.innerHTML = resultString; // Use innerHTML to render the bold tags
             resultsTable.appendChild(tr);
+            firstItemShown = true;
+          });
+          const breakButton = document.getElementById('break-button');
+          breakButton.addEventListener('click', () => {
+            [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
+            addVote("break");
           });
         }
       };
