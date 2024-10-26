@@ -1,5 +1,5 @@
 TODO:
-  * add way to intentionally split chunks
   * add add a server component
 DONE:
   * make it a PWA
+  * add way to intentionally split chunks
