@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Feedback</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    #results .material-icons {
+      vertical-align: text-bottom;
+    }
+
+    #results td {
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table id="results"></table>
+
+  <script>
+    const resultsTable = document.getElementById('results');
+
+    let db;
+
+    const request = window.indexedDB.open('voteDB', 1);
+
+    request.onerror = function (event) {
+      console.error('Database error:', event.target.errorCode);
+    };
+
+    request.onsuccess = function (event) {
+      db = event.target.result;   
+
+      console.log('Database opened successfully');   
+
+      displayVoteChunks();
+    };
+
+    request.onupgradeneeded = function (event) {
+      let db = event.target.result;
+      let store = db.createObjectStore('votes', {keyPath: 'ts'});
+      store.createIndex('ts', 'ts', {unique: false});
+    };
+
+    function displayVoteChunks() {
+      let transaction = db.transaction(['votes'], 'readonly');
+      let objectStore = transaction.objectStore('votes');
+      let index = objectStore.index('ts');
+      let request = index.openCursor();
+
+      let chunks = [];
+      let currentChunk = null;
+      let lastTimestamp = null;
+
+      request.onsuccess = function (event) {
+        let cursor = event.target.result;
+        if (cursor) {
+          let timestamp = cursor.value.ts;
+          let vote = cursor.value.vote;
+
+          if (!currentChunk || timestamp - lastTimestamp > (30 * 60 * 1000)) {
+            // Start a new chunk
+            currentChunk = {
+              startTime: timestamp,
+              duration: 0,
+              votes: {satisfied: 0, neutral: 0, dissatisfied: 0}
+            };
+            chunks.push(currentChunk);
+          }
+
+          currentChunk.duration = timestamp - currentChunk.startTime;
+          currentChunk.votes[vote]++;
+          lastTimestamp = timestamp;
+
+          cursor.continue();
+        } else {
+
+          // Display the chunks
+          resultsTable.innerHTML = ''; // Clear previous results
+          chunks.reverse(); // Order chunks from most recent to oldest
+          chunks.forEach(chunk => {
+            let startTime = new Date(chunk.startTime);
+            let endTime = new Date(chunk.startTime + chunk.duration);
+
+            let dateString = formatDate(startTime);
+            let timeSpanString = `<b>${formatTime(startTime)} - ${formatTime(endTime)}</b>`;
+            let resultString = `<td>${dateString}, ${timeSpanString}</td> `
+            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span>  ${chunk.votes.satisfied}</td>`;
+            resultString += `<td><span class="material-icons">sentiment_neutral</span>  ${chunk.votes.neutral}</td>`;
+            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span>  ${chunk.votes.dissatisfied}</td>`;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = resultString; // Use innerHTML to render the bold tags
+            resultsTable.appendChild(tr);
+          });
+        }
+      };
+
+      request.onerror = function (event) {
+        console.error('Error displaying vote chunks:', event.target.errorCode);
+      };
+    }
+
+     function formatDate(date) {
+      let today = new Date();
+      let yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      if (isSameDay(date, today)) {
+        return "Dziś";
+      } else if (isSameDay(date, yesterday)) {
+        return "Wczoraj";   
+
+      } else if (daysBetween(date, today) <= 10) {
+        return `${daysBetween(date, today)} dni temu`;
+      } else {
+        return date.toISOString().slice(0, 10); // yyyy-mm-dd
+      }
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false});
+    }
+
+    function isSameDay(date1, date2) {
+      return date1.getFullYear() === date2.getFullYear() &&
+             date1.getMonth() === date2.getMonth() &&
+             date1.getDate() === date2.getDate();
+    }
+
+    function   
+ daysBetween(date1, date2) {
+      const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      const diffDays = Math.round(Math.abs((date1 - date2) / oneDay));
+      return diffDays;   
+
+    }
+
+  </script>
+
+</body>
+
+</html>
