@@ -67,7 +67,7 @@
       const icons = document.querySelectorAll('.icon');
 
       icons.forEach(icon => {
-        icon.addEventListener('touchstart', () => {
+        icon.addEventListener('mousedown', () => {
           [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
           icon.classList.toggle('flipped');
         });
