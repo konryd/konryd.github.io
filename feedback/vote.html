@@ -149,10 +149,12 @@
           infoText.style.display = 'none';
           iconsDiv.style.display = 'flex';
           infoButton.textContent = '[info]';
+          document.body.style.overflow = 'hidden'
         } else {
           infoText.style.display = 'block';
           iconsDiv.style.display = 'none';
-          infoButton.textContent = '[hide]';
+          infoButton.textContent = '[zamknij]';
+          document.body.style.overflow = 'scroll'
         }
       });
 
