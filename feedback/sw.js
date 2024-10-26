@@ -1,10 +1,30 @@
-var GHPATH = '/feedback';
-var APP_PREFIX = 'konryd_feedback_';
-var VERSION = 'version_00';
- 
-// The files to make available for offline use. make sure to add 
-// others to this list
-var URLS = [    
-  `${GHPATH}/`,
-  `${GHPATH}/vote.html`
-]
+self.addEventListener('install', function(event) {
+  console.log('Service Worker installed');
+});
+
+self.addEventListener('activate', function(event) {
+  console.log('Service Worker activated');   
+
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        if (response) {
+          console.log('Serving from cache:', event.request.url);
+          return response; 
+        } else {
+          console.log('Fetching from network:', event.request.url);
+          return fetch(event.request)
+            .then(function(response) {
+              return caches.open('konryd_feedback_cache')
+                .then(function(cache) {
+                  cache.put(event.request, response.clone()); 
+                  return response;
+                });
+            });
+        }
+      })
+  );
+});
