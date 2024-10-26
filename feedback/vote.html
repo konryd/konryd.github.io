@@ -163,12 +163,14 @@
           infoText.style.display = 'none';
           iconsDiv.style.display = 'flex';
           infoButton.textContent = '[info]';
-          document.body.style.overflow = 'hidden'
+          document.body.style.overflow = 'hidden';
+          document.body.style.userSelect = 'none';
         } else {
           infoText.style.display = 'block';
           iconsDiv.style.display = 'none';
           infoButton.textContent = '[zamknij]';
           document.body.style.overflow = 'scroll'
+          document.body.style.userSelect = 'auto';
         }
       });
 
