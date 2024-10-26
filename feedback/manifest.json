@@ -3,12 +3,12 @@
   "start_url": "/feedback/vote.html",
   "icons": [
     {
-      "src": "/icon512.png",
+      "src": "/feedback/icon512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "/icon192.png",
+      "src": "/feedback/icon192.png",
       "type": "image/png",
       "sizes": "192x192"
     }
