@@ -6,5 +6,5 @@ var VERSION = 'version_00';
 // others to this list
 var URLS = [    
   `${GHPATH}/`,
-  `${GHPATH}/vote.html`,
+  `${GHPATH}/vote.html`
 ]
