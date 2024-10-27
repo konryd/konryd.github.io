@@ -152,13 +152,11 @@
           iconsDiv.style.display = 'flex';
           infoButton.textContent = '[info]';
           document.body.style.overflow = 'hidden';
-          document.body.style.userSelect = 'none';
         } else {
           infoText.style.display = 'block';
           iconsDiv.style.display = 'none';
           infoButton.textContent = '[zamknij]';
           document.body.style.overflow = 'auto'
-          document.body.style.userSelect = 'auto';
           updateCounter();
         }
       });
