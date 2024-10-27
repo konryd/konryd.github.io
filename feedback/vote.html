@@ -134,7 +134,7 @@
       const icons = document.querySelectorAll('.icon');
 
       icons.forEach(icon => {
-        icon.addEventListener('mousedown', () => {
+        icon.addEventListener('pointerdown', () => {
           [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
           icon.classList.toggle('flipped');
         });
@@ -146,7 +146,7 @@
       const iconsDiv = document.getElementById('icons');
       const resultsTable = document.getElementById('results');
 
-      infoButton.addEventListener('click', () => {
+      infoButton.addEventListener('pointerdown', () => {
         if (infoText.style.display === 'block') {
           infoText.style.display = 'none';
           iconsDiv.style.display = 'flex';
@@ -294,7 +294,7 @@
             firstItemShown = true;
           });
           const breakButton = document.getElementById('break-button');
-          breakButton.addEventListener('click', () => {
+          breakButton.addEventListener('pointerdown', () => {
             [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
             addVote("break");
           });
@@ -309,9 +309,9 @@
 
   }
 
-  satisfiedButton.addEventListener('click', () => addVote('satisfied'));
-  neutralButton.addEventListener('click', () => addVote('neutral'));
-  dissatisfiedButton.addEventListener('click', () => addVote('dissatisfied'));
+  satisfiedButton.addEventListener('pointerdown', () => addVote('satisfied'));
+  neutralButton.addEventListener('pointerdown', () => addVote('neutral'));
+  dissatisfiedButton.addEventListener('pointerdown', () => addVote('dissatisfied'));
 </script>
 </body>
 </html>
