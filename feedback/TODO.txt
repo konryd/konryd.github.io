@@ -1,5 +1,7 @@
 TODO:
   * add add a server component
+  * make the size of faces icons in results view follow the screen size
+  * make sure the app is able to update
 DONE:
   * make it a PWA
   * add way to intentionally split chunks
