@@ -39,10 +39,13 @@
       transform-style: preserve-3d;
     }
 
-    .icon.flipped {
-      transform: rotateY(180deg);
+    .icon.hidden {
+      color: white;
     }
 
+    .icon.chosen .material-icons {
+      font-size: 260px;
+    }
 
     .material-icons {
       font-size: 250px;
@@ -139,7 +142,19 @@
       icons.forEach(icon => {
         icon.addEventListener('pointerdown', () => {
           [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
-          icon.classList.toggle('flipped');
+          icons.forEach(otherIcon => {
+            if (icon === otherIcon) {
+              otherIcon.classList.toggle('chosen');
+              setTimeout(() => {
+                otherIcon.classList.toggle('chosen');
+              }, 1000);
+            } else {
+              otherIcon.classList.toggle('hidden');
+              setTimeout(() => {
+                otherIcon.classList.toggle('hidden');
+              }, 1000);
+            }
+          });
         });
       });
 
