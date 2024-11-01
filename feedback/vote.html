@@ -99,6 +99,10 @@
       padding-top: min(4vw, 4vh);
       font-size: min(4vw, 4vh);
     }
+
+    #info-text .material-icons { 
+      font-size: min(4vw, 4vh);
+    }
   </style>
 
   <script>
@@ -301,9 +305,12 @@
               resultString += ` <div id="break-button" class="break-button">[zakończ]</div>`
             }
             resultString += `</td> `
-            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span></td><td class="num">${chunk.votes.satisfied}</td>`;
-            resultString += `<td><span class="material-icons">sentiment_neutral</span></td><td class="num">${chunk.votes.neutral}</td>`;
-            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span></td><td class="num">${chunk.votes.dissatisfied}</td>`;
+            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span></td>`
+            resultString += `<td class="num">${perc(chunk.votes.satisfied, chunk)} (${chunk.votes.satisfied})</td>`;
+            resultString += `<td><span class="material-icons">sentiment_neutral</span></td>`
+            resultString += `<td class="num">${perc(chunk.votes.neutral, chunk)} (${chunk.votes.neutral})</td>`;
+            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span></td>`
+            resultString += `<td class="num">${perc(chunk.votes.dissatisfied, chunk)} (${chunk.votes.dissatisfied})</td>`;
 
             let tr = document.createElement('tr');
             tr.innerHTML = resultString; // Use innerHTML to render the bold tags
@@ -317,6 +324,21 @@
           });
         }
       };
+
+      function perc(num, chunk) {
+        if (num == 0) {
+          return "0%"
+        }
+        return formatNumber(100.0 * num / (chunk.votes.satisfied + chunk.votes.neutral + chunk.votes.dissatisfied)) + "%";
+      }
+
+      function formatNumber(num) {
+        if (Math.abs(num) > 1) {
+          return Math.round(num).toString(); // No decimal places
+        } else {
+          return num.toFixed(2); // 2 decimal places
+        }
+      }
 
       request.onerror = function (event) {
         console.error('Error displaying vote chunks:', event.target.errorCode);
