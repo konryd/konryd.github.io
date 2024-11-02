@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Table</title>   
+
+    <style>
+        .table {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-size: min(6vw, 6vh);
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ccc; /* Add a subtle divider */
+            padding: 10px 0;
+        }
+
+        .left-group, .right-group {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .left-group > div , .right-group > div {
+          padding: 5px;
+        }
+
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+  .left-group, .right-group {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .left-group > div, .right-group > div {
+    box-sizing: border-box;
+    padding: 5px;
+    flex-shrink: 0;
+  }
+  .right-group {
+    justify-content: flex-end; /* Align right-group items to the right */
+  }
+}
+
+    </style>
+</head>
+<body>
+
+<div class="table">
+    <div class="row">
+        <div class="left-group">
+            <div>data1</div>
+            <div>data2</div>
+            <div>data3</div>
+        </div>
+        <div class="right-group">
+            <div>data4</div>
+            <div>data5</div>
+            <div>data6</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="left-group">
+            <div>data1</div>
+            <div>data2</div>
+            <div>data3</div>
+        </div>
+        <div class="right-group">
+            <div>data4</div>
+            <div>data5</div>
+            <div>data6</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
