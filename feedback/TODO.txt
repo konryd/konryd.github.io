@@ -1,8 +1,8 @@
 TODO:
   * add add a server component
-  * make sure the app is able to update
   * tweak display for narrow screens - each row in the table should "break" in two, with the right part still aligned to the right
 DONE:
   * make it a PWA
   * add way to intentionally split chunks
   * make the size of faces icons in results view follow the screen size
+  * make sure the app is able to update
