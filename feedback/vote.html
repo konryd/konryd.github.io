@@ -57,7 +57,7 @@
     }
 
     #results .material-icons {
-      font-size: 19px;
+      font-size: min(6vw, 6vh);
       vertical-align: text-bottom;
     }
 
@@ -97,12 +97,57 @@
       top: 0%;
       left: 0%;
       padding-top: min(4vw, 4vh);
-      font-size: min(4vw, 4vh);
+      font-size: min(6vw, 6vh);
+      width: 100%;
     }
 
-    #info-text .material-icons { 
-      font-size: min(4vw, 4vh);
+    .table {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #ccc; /* Add a subtle divider */
+        flex-direction: row;
+        padding: 10px 0;
+    }
+
+    .left-group, .right-group {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .left-group > div , .right-group > div {
+      padding: 5px;
+      white-space: nowrap;
+    }
+
+    @media (orientation: portrait) {
+      .row {
+        flex-direction: column;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      .left-group, .right-group {
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+      .left-group > div, .right-group > div {
+        box-sizing: border-box;
+        padding: 5px;
+        flex-shrink: 0;
+      }
+      .right-group {
+        //justify-content: flex-end; /* Align right-group items to the right */
+        margin-top: 2vw;
+        margin-bottom: 2vw;
+        margin-left: 10vw;
+      }
+    }
+
   </style>
 
   <script>
@@ -209,7 +254,7 @@
   </div>
 
   <div id="info-text">
-    <table id="results"></table>
+    <div id="results" class="table"></div>
   </div>
 
   <div class="info-button" id="info-button">[info]</div>
@@ -309,21 +354,25 @@
             let startTime = new Date(chunk.startTime);
             let endTime = new Date(chunk.startTime + chunk.duration);
 
+            let resultString = `<div class="left-group">`
+
             let dateString = formatDate(startTime);
             let timeSpanString = `<b>${formatTime(startTime)} - ${formatTime(endTime)}</b>`;
-            let resultString = `<td class="date">${dateString}, ${timeSpanString}`
+            resultString += `<div>${dateString}, ${timeSpanString}</div>`
             if (!firstItemShown) {
               resultString += ` <div id="break-button" class="break-button">[zakończ]</div>`
             }
-            resultString += `</td> `
-            resultString += `<td><span class="material-icons">sentiment_very_satisfied</span></td>`
-            resultString += `<td class="num">${perc(chunk.votes.satisfied, chunk)} (${chunk.votes.satisfied})</td>`;
-            resultString += `<td><span class="material-icons">sentiment_neutral</span></td>`
-            resultString += `<td class="num">${perc(chunk.votes.neutral, chunk)} (${chunk.votes.neutral})</td>`;
-            resultString += `<td><span class="material-icons">sentiment_very_dissatisfied</span></td>`
-            resultString += `<td class="num">${perc(chunk.votes.dissatisfied, chunk)} (${chunk.votes.dissatisfied})</td>`;
+            resultString += `</div><div class="right-group">`
+            resultString += `<div><span class="material-icons">sentiment_very_satisfied</span></div>`
+            resultString += `<div>${perc(chunk.votes.satisfied, chunk)} (${chunk.votes.satisfied})</div>`;
+            resultString += `<div><span class="material-icons">sentiment_neutral</span></div>`
+            resultString += `<div>${perc(chunk.votes.neutral, chunk)} (${chunk.votes.neutral})</div>`;
+            resultString += `<div><span class="material-icons">sentiment_very_dissatisfied</span></div>`
+            resultString += `<div>${perc(chunk.votes.dissatisfied, chunk)} (${chunk.votes.dissatisfied})</div>`;
+            resultString += `</div>`
 
-            let tr = document.createElement('tr');
+            let tr = document.createElement('div');
+            tr.classList.add("row")
             tr.innerHTML = resultString; // Use innerHTML to render the bold tags
             resultsTable.appendChild(tr);
             firstItemShown = true;
