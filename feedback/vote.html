@@ -146,7 +146,11 @@
 
       icons.forEach(icon => {
         icon.addEventListener('pointerdown', () => {
+          if (!allActive()) {
+            return;
+          }
           [audio1, audio2, audio3, audio4][Math.floor(Math.random() * 4)].play();
+
           icons.forEach(otherIcon => {
             if (icon === otherIcon) {
               otherIcon.classList.toggle('chosen');
@@ -240,6 +244,13 @@
     let store = db.createObjectStore('votes', { keyPath: 'ts' });
     store.createIndex('ts', 'ts', { unique: false }); 
   };
+
+  function allActive() {
+    const icons = document.querySelectorAll('.icon');
+    result = !Array.from(icons).some(icon => icon.classList.contains("hidden"))
+    return result
+  }
+
 
   function addVote(vote) {
     let transaction = db.transaction(['votes'], 'readwrite');
@@ -348,9 +359,21 @@
 
   }
 
-  satisfiedButton.addEventListener('pointerdown', () => addVote('satisfied'));
-  neutralButton.addEventListener('pointerdown', () => addVote('neutral'));
-  dissatisfiedButton.addEventListener('pointerdown', () => addVote('dissatisfied'));
+  satisfiedButton.addEventListener('pointerdown', () => {
+    if (allActive()) {
+      addVote('satisfied')
+    }
+  });
+  neutralButton.addEventListener('pointerdown', () => {
+    if (allActive()) {
+      addVote('neutral');
+    }
+  });
+  dissatisfiedButton.addEventListener('pointerdown', () => {
+    if (allActive()) {
+      addVote('dissatisfied');
+    }
+  });
 </script>
 </body>
 </html>
